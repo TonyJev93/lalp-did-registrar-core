@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: decentralized-identity:jsonld-common-java:0.2-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/decentralized-identity/jsonld-common-java/0.2-SNAPSHOT/jsonld-common-java-0.2-20210126.145339-23.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/decentralized-identity/jsonld-common-java/0.2-SNAPSHOT/jsonld-common-java-0.2-20210126.145339-23-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/decentralized-identity/jsonld-common-java/0.2-SNAPSHOT/jsonld-common-java-0.2-20210126.145339-23-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
