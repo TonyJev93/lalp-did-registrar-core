@@ -3,7 +3,6 @@ package net.lotte.lalpid.did.registrar.api.dto;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import foundation.identity.did.DIDDocument;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

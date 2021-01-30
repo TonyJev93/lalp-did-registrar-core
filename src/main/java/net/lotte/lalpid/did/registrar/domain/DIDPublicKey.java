@@ -1,6 +1,5 @@
 package net.lotte.lalpid.did.registrar.domain;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import foundation.identity.did.DIDDocument;
 import foundation.identity.did.PublicKey;
 import lombok.*;
@@ -17,8 +16,6 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class DIDPublicKey extends DIDKey {
-
-    ObjectMapper objectMapper = new ObjectMapper();
 
     @Builder
     public DIDPublicKey(String controller, String id, String type, String publicKeyPem, String keyId) {
@@ -55,11 +52,15 @@ public class DIDPublicKey extends DIDKey {
     }
 
     public static PublicKey selectPublicKey(List<PublicKey> publicKeyList, String keyId) {
-        return Optional.ofNullable(publicKeyList.stream()
-                .filter(publicKey -> keyId.equals(DIDUrl.fromUri(publicKey.getId()).getFragment()))
-                .collect(Collectors.toList()))
-                .orElseThrow(() -> new BusinessException("서명한 Key ID에 해당하는 PublicKey를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_PUBLIC_KEY_ID))
-                .get(0);
+        List<PublicKey> selectedPublicKeyList = publicKeyList.stream()
+                .filter(publicKey -> keyId.equals(DIDUrl.fromUri(publicKey.getId()).getFragment())).collect(Collectors.toList());
+
+        if (Optional.ofNullable(selectedPublicKeyList).get().size() == 0) {
+            throw new BusinessException("서명한 Key ID에 해당하는 PublicKey를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_PUBLIC_KEY_ID);
+        }
+
+        return selectedPublicKeyList.get(0);
+
     }
 
     public PublicKey toPublicKey() {

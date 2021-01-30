@@ -20,7 +20,7 @@ import java.util.Map;
 public class TokenController {
     @PostMapping("/jwt")
     public ResponseEntity<TokenDto.Res> getJwt(@RequestBody Map<String, Object> operation) {
-      Token jwtToken = Token.toJwt(operation);
+        Token jwtToken = Token.toJwt(operation);
         return new ResponseEntity<TokenDto.Res>(TokenDto.Res.of(jwtToken), HttpStatus.OK);
     }
 }

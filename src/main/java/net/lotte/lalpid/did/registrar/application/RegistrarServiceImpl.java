@@ -1,6 +1,5 @@
 package net.lotte.lalpid.did.registrar.application;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import foundation.identity.did.DIDDocument;
 import foundation.identity.did.DIDURL;
 import lombok.AllArgsConstructor;
@@ -16,8 +15,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 
     private final RegistrarRepository registrarRepository;
     private final ResolverRepository resolverRepository;
-
-    ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public LalpDIDDocument register(LalpDIDDocument lalpDIDDocument) {
@@ -42,6 +39,7 @@ public class RegistrarServiceImpl implements RegistrarService {
         Token.verify(token, didDocument);
 
         // update did document
+
 
         return LalpDIDDocument.fromDIDDocument(didDocument);
     }

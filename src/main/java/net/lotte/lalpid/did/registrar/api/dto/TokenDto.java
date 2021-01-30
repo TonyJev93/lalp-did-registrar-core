@@ -7,9 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.lotte.lalpid.did.registrar.domain.Token;
 
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-
 public class TokenDto {
 
     @Getter
@@ -22,8 +19,8 @@ public class TokenDto {
         @Builder
         public Res(Token token) {
             this.token = token.getToken();
-            this.rsaPrivateKey = token.getRsaPrivateKey().getEncoded();
-            this.rsaPublicKey = token.getRsaPublicKey().getEncoded();
+//            this.rsaPrivateKey = Optional.ofNullable(token.getRsaPrivateKey().getEncoded()).orElse("".getBytes());
+//            this.rsaPublicKey = Optional.ofNullable(token.getRsaPublicKey()).get().getEncoded();
         }
 
         public static Res of(Token token) {

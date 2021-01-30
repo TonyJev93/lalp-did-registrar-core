@@ -1,18 +1,12 @@
 package net.lotte.lalpid.did.registrar.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import foundation.identity.did.AssertionMethod;
-import foundation.identity.did.Authentication;
-import foundation.identity.did.DIDDocument;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -44,7 +38,4 @@ public class DIDAssertionMethod extends DIDKey {
         return resultList;
     }
 
-    public static List<DIDAssertionMethod> fromAssertionMethodList(List<AssertionMethod> assertionMethods) {
-        return null;
-    }
 }

@@ -1,14 +1,11 @@
 package net.lotte.lalpid.did.registrar.domain;
 
 import foundation.identity.did.DIDDocument;
-import foundation.identity.did.PublicKey;
 import lombok.*;
 import net.lotte.lalpid.did.registrar.infrastructure.util.Uuid;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static net.lotte.lalpid.did.registrar.infrastructure.util.Time.getCurrentDateTimeForW3CFormat;
 
@@ -49,8 +46,8 @@ public class LalpDIDDocument {
                 .context(didDocument.getContexts().get(0).toString())
                 .serviceList(DIDService.fromServiceList(didDocument.getServices()))
                 .publicKeyList(DIDPublicKey.fromDIDDocument(didDocument))
-                .authenticationList(DIDAuthentication.fromAuthenticationList(didDocument.getAuthentications()))
-                .assertionMethodList(DIDAssertionMethod.fromAssertionMethodList(didDocument.getAssertionMethods()))
+//                .authenticationList(DIDAuthentication.fromAuthenticationList(didDocument.getAuthentications()))
+//                .assertionMethodList(DIDAssertionMethod.fromAssertionMethodList(didDocument.getAssertionMethods()))
                 .build();
     }
 
