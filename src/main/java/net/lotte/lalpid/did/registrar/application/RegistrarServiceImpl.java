@@ -47,7 +47,10 @@ public class RegistrarServiceImpl implements RegistrarService {
     }
 
     @Override
-    public boolean delete(DIDDocument didDocument) {
+    public boolean delete(String did) {
+
+        // get DID Document from resolver
+        DIDDocument didDocument = resolverRepository.getDIDDocument(did);
 
         didDocument.setJsonObjectKeyValue("publicKey", "");
         didDocument.setJsonObjectKeyValue("authentication", "");

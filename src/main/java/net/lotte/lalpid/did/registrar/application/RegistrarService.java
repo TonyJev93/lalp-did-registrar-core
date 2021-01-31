@@ -13,6 +13,6 @@ public interface RegistrarService {
 
     boolean update(String token, String did);
 
-    boolean delete(DIDDocument didDocument);
+    boolean delete(String did);
 
 }

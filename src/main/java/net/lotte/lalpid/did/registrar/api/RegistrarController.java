@@ -53,6 +53,11 @@ public class RegistrarController {
     public ResponseEntity<RegistrarDto.UpdateRes> deleteDid(@RequestBody @Validated(Delete.class) RegistrarDto.DeleteReq request
             , @PathVariable("did") @Validated(Delete.class) @Pattern(regexp = VALID_CHK_REGEXP_LALP_DID_URL, message = VALID_CHK_MSG_DID_URL_PATTERN_ERROR) String did
             , BindingResult bindingResult) throws BindException {
+
+        String token = request.getToken();
+        didTokenService.verify(token, did, bindingResult);
+
+        registrarService.delete(did);
         return new ResponseEntity<RegistrarDto.UpdateRes>(RegistrarDto.UpdateRes.builder().msg("success to delete DID document.").result(true).build(), HttpStatus.ACCEPTED);
     }
 
