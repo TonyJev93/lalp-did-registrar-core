@@ -53,7 +53,7 @@ public class DIDUpdateDao {
         }
     }
 
-    public DIDDocument toDIDDocument(DIDDocument targetDidDocument) {
+    public DIDDocument getUpdatedDIDDocument(DIDDocument targetDidDocument) {
 
         List<Map<String, Object>> publicKeyMapList = (List<Map<String, Object>>) targetDidDocument.getJsonObject().get("publicKey");
         List<PublicKey> publicKeyList = publicKeyMapList.stream().map(publicKey -> PublicKey.fromJsonObject(publicKey)).collect(Collectors.toList());

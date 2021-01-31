@@ -39,7 +39,7 @@ public class RegistrarServiceImpl implements RegistrarService {
         DIDDocument targetDidDocument = resolverRepository.getDIDDocument(did);
 
         // To DIDDocument Entity
-        DIDDocument updatedDIDDocument = didUpdateDao.toDIDDocument(targetDidDocument);
+        DIDDocument updatedDIDDocument = didUpdateDao.getUpdatedDIDDocument(targetDidDocument);
 
         // TODO : DID Document validation check ( duplicated check )
 
