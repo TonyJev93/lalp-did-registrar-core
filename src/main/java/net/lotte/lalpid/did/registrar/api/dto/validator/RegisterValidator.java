@@ -134,4 +134,5 @@ public class RegisterValidator implements ConstraintValidator<RegisterInputCheck
                 .addPropertyNode(firstNode)
                 .addConstraintViolation();
     }
+
 }

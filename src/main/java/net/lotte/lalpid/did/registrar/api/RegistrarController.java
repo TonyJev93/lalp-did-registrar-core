@@ -2,8 +2,9 @@ package net.lotte.lalpid.did.registrar.api;
 
 import lombok.RequiredArgsConstructor;
 import net.lotte.lalpid.did.registrar.api.dto.RegistrarDto;
-import net.lotte.lalpid.did.registrar.api.dto.validator.UpdateValidator;
+import net.lotte.lalpid.did.registrar.api.dto.validator.markInterface.Delete;
 import net.lotte.lalpid.did.registrar.api.dto.validator.markInterface.Update;
+import net.lotte.lalpid.did.registrar.application.DIDTokenService;
 import net.lotte.lalpid.did.registrar.application.RegistrarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,25 +26,34 @@ import static net.lotte.lalpid.did.registrar.api.dto.validator.ValidationMsg.VAL
 public class RegistrarController {
 
     private final RegistrarService registrarService;
-    private final UpdateValidator updateValidator;
+    private final DIDTokenService didTokenService;
+
 
     @PostMapping
-    public ResponseEntity<RegistrarDto.Res> registerDid(@RequestBody @Valid RegistrarDto.RegisterReq request) {
-        return new ResponseEntity<RegistrarDto.Res>(RegistrarDto.Res.builder().lalpDIDDocument(registrarService.register(request.toEntity())).build(), HttpStatus.CREATED);
+    public ResponseEntity<RegistrarDto.RegisterRes> registerDid(@RequestBody @Valid RegistrarDto.RegisterReq request) {
+        return new ResponseEntity<RegistrarDto.RegisterRes>(RegistrarDto.RegisterRes.builder().lalpDIDDocument(registrarService.register(request.toEntity())).build(), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{didUrl}")
-    public ResponseEntity<RegistrarDto.Res> updateDid(@RequestBody @Validated(Update.class) RegistrarDto.UpdateReq request
-            , @PathVariable("didUrl") @Validated(Update.class) @Pattern(regexp = VALID_CHK_REGEXP_LALP_DID_URL, message = VALID_CHK_MSG_DID_URL_PATTERN_ERROR) String didUrl
+    @PutMapping("/{did}")
+    public ResponseEntity<RegistrarDto.UpdateRes> updateDid(@RequestBody @Validated(Update.class) RegistrarDto.UpdateReq request
+            , @PathVariable("did") @Validated(Update.class) @Pattern(regexp = VALID_CHK_REGEXP_LALP_DID_URL, message = VALID_CHK_MSG_DID_URL_PATTERN_ERROR) String did
             , BindingResult bindingResult) throws BindException {
 
-        updateValidator.validate(request, didUrl, bindingResult);
-        return new ResponseEntity<RegistrarDto.Res>(RegistrarDto.Res.builder().lalpDIDDocument(registrarService.update(request.getToken())).build(), HttpStatus.CREATED);
+        String token = request.getToken();
+        didTokenService.verify(token, did, bindingResult);
+
+        if (!registrarService.update(token, did)) {
+            return new ResponseEntity<RegistrarDto.UpdateRes>(RegistrarDto.UpdateRes.builder().msg("fail to update DID document").result(false).build(), HttpStatus.CONFLICT);
+        }
+
+        return new ResponseEntity<RegistrarDto.UpdateRes>(RegistrarDto.UpdateRes.builder().msg("success to update DID document.").result(true).build(), HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping
-    public ResponseEntity<RegistrarDto.Res> deleteDid(@RequestBody @Valid RegistrarDto.DeleteReq request) {
-        return null;
+    @DeleteMapping("/{did}")
+    public ResponseEntity<RegistrarDto.UpdateRes> deleteDid(@RequestBody @Validated(Delete.class) RegistrarDto.DeleteReq request
+            , @PathVariable("did") @Validated(Delete.class) @Pattern(regexp = VALID_CHK_REGEXP_LALP_DID_URL, message = VALID_CHK_MSG_DID_URL_PATTERN_ERROR) String did
+            , BindingResult bindingResult) throws BindException {
+        return new ResponseEntity<RegistrarDto.UpdateRes>(RegistrarDto.UpdateRes.builder().msg("success to delete DID document.").result(true).build(), HttpStatus.ACCEPTED);
     }
 
 }

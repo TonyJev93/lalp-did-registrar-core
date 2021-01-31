@@ -1,12 +1,14 @@
 package net.lotte.lalpid.did.registrar.application;
 
 import foundation.identity.did.DIDDocument;
-import foundation.identity.did.DIDURL;
 import lombok.AllArgsConstructor;
+import net.lotte.lalpid.did.registrar.application.dao.DIDUpdateDao;
+import net.lotte.lalpid.did.registrar.domain.DIDToken;
 import net.lotte.lalpid.did.registrar.domain.LalpDIDDocument;
-import net.lotte.lalpid.did.registrar.domain.Token;
 import net.lotte.lalpid.did.registrar.domain.infra.RegistrarRepository;
 import net.lotte.lalpid.did.registrar.domain.infra.ResolverRepository;
+import net.lotte.lalpid.did.registrar.global.error.ErrorCode;
+import net.lotte.lalpid.did.registrar.global.error.exception.BusinessException;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -21,32 +23,36 @@ public class RegistrarServiceImpl implements RegistrarService {
 
         // DID Document init - DID 신규 발번 및 맵핑
         lalpDIDDocument.init();
-        registrarRepository.saveDIDDocument(lalpDIDDocument.toDIDDocument());
+        if (!registrarRepository.saveDIDDocument(lalpDIDDocument.toDIDDocument())) {
+            throw new BusinessException("Occur Error while registering DID Document in Fabric", ErrorCode.FABRIC_NETWORK_ERROR);
+        }
 
         return lalpDIDDocument;
     }
 
     @Override
-    public LalpDIDDocument update(String token) {
-
-        // get DID URL from token
-        DIDURL didUrl = Token.getDidUrl(token);
+    public boolean update(String token, String did) {
+        // Transfer Token to Update Request Map
+        DIDUpdateDao didUpdateDao = DIDToken.of(token).toUpdateDto();
 
         // get DID Document from resolver
-        DIDDocument didDocument = resolverRepository.getDIDDocument(didUrl.getDid().getDidString());
+        DIDDocument targetDidDocument = resolverRepository.getDIDDocument(did);
 
-        // verify token
-        Token.verify(token, didDocument);
+        // To DIDDocument Entity
+        DIDDocument updatedDIDDocument = didUpdateDao.toDIDDocument(targetDidDocument);
 
-        // update did document
+        // TODO : DID Document validation check ( duplicated check )
 
-
-        return LalpDIDDocument.fromDIDDocument(didDocument);
+        return registrarRepository.saveDIDDocument(updatedDIDDocument);
     }
 
-
     @Override
-    public LalpDIDDocument delete() {
-        return null;
+    public boolean delete(DIDDocument didDocument) {
+
+        didDocument.setJsonObjectKeyValue("publicKey", "");
+        didDocument.setJsonObjectKeyValue("authentication", "");
+        didDocument.setJsonObjectKeyValue("assertionMethod", "");
+
+        return registrarRepository.saveDIDDocument(didDocument);
     }
 }

@@ -6,7 +6,6 @@ public class ValidationMsg {
     public static final String VALID_CHK_MSG_KEY_VALUE_IS_EMPTY = "publicKeyValue is empty";
     public static final String VALID_CHK_MSG_ADD_PUBLIC_KEY_IS_EMPTY = "addPublicKeys is empty";
     public static final String VALID_CHK_MSG_ADD_AUTHENTICATION_IS_EMPTY = "authentication is empty";
-    public static final String VALID_CHK_MSG_ADD_PUBLIC_KEY_IS_NULL = "addPublicKeys is null";
     public static final String VALID_CHK_MSG_SERVICE_ENDPOINT_IS_EMPTY = "serviceEndpoint is empty";
     public static final String VALID_CHK_MSG_TOKEN_IS_EMPTY = "token is empty";
     public static final String VALID_CHK_MSG_DID_URL_PATTERN_ERROR = "PathVariable(DID URL) Pattern should be [did:lalp:{UUID}]";

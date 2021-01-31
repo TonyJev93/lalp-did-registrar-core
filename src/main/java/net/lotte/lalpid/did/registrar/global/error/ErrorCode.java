@@ -29,7 +29,7 @@ public enum ErrorCode {
     DID_DOCUMENT_DEACTIVATED(410, "R002", "DID Document is deactivated."),
 
     //  Input Validation
-    NOT_CORRECT_INPUT_KEY_ID(400, "I001", "Not correct input KeyId. Check your KeyID."),
+    NOT_CORRECT_INPUT_KEY_ID(400, "I001", "Not correct input RemoveKeyId. Check your KeyID."),
 
     // Resolve Error
     OCCURRED_ERROR_RESOLVE_DID_DOCUMENT(400, "R001", "An error occurred while resolving the DID Document."),
@@ -39,9 +39,11 @@ public enum ErrorCode {
     FABRIC_GET_CERTIFICATE_ERROR(400, "F002", "블록체인에 인증서 조회 실패"),
     FABRIC_PUT_SIGNATURE_ERROR(400, "F003", "블록체인에 서명 저장 실패"),
     FABRIC_GET_SIGNATURE_ERROR(400, "F004", "블록체인에 서명 조회 실패"),
+    FABRIC_NETWORK_ERROR(400, "F004", "Check blockChain network."),
 
     // TOKEN
-    GENERATE_TOKEN_ERROR(400, "T001", "토큰 발행에 문제가 발생하였습니다.");
+    GENERATE_TOKEN_ERROR(400, "T001", "토큰 발행에 문제가 발생하였습니다."),
+    NOT_VALID_TOKEN_TYPE(400, "T002", "토큰의 형식이 유효하지 않습니다.");
 
     private int status;
     private final String code;

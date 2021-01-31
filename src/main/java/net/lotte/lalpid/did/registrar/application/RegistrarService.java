@@ -4,13 +4,15 @@ import foundation.identity.did.DIDDocument;
 import net.lotte.lalpid.did.registrar.domain.LalpDIDDocument;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public interface RegistrarService {
 
-    LalpDIDDocument register(LalpDIDDocument registerRequest);
+    LalpDIDDocument register(LalpDIDDocument lalpDIDDocument);
 
-    LalpDIDDocument update(String token);
+    boolean update(String token, String did);
 
-    LalpDIDDocument delete();
+    boolean delete(DIDDocument didDocument);
 
 }

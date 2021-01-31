@@ -13,11 +13,17 @@ public class FabricRegistrarRepository implements RegistrarRepository {
     private final FabricService fabricService;
 
     @Override
-    public void saveDIDDocument(DIDDocument didDocument) {
+    public boolean saveDIDDocument(DIDDocument didDocument) {
 
-        System.out.println(didDocument.toJson(true));
+        try {
+            System.out.println(didDocument.toJson(true));
 
-//        fabricService.executeChaincodeForPutState("registerDidDocument", didDocument.toJson(true);
+//            fabricService.executeChaincodeForPutState("registerDidDocument", didDocument.toJson(true);
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
 
     }
 

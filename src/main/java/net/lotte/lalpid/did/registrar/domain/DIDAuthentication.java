@@ -1,12 +1,12 @@
 package net.lotte.lalpid.did.registrar.domain;
 
 import foundation.identity.did.Authentication;
-import foundation.identity.did.DIDDocument;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +30,7 @@ public class DIDAuthentication extends DIDKey {
         for (DIDAuthentication authentication : authenticationList) {
             // Key 완전체로 전달된 경우
             if (authentication.getType() != null) {
-                resultList.add(authentication);
+                resultList.add(authentication.toAuthentication());
             }
             // Key ID만 전달된 경우
             else {
@@ -48,5 +48,12 @@ public class DIDAuthentication extends DIDKey {
     private static DIDAuthentication fromAuthentication(Authentication authentication) {
 
         return null;
+    }
+
+    private Authentication toAuthentication() {
+        Authentication authentication = Authentication.builder().id(URI.create(this.id)).type(this.type).build();
+        authentication.setJsonObjectKeyValue("publicKeyPem", this.publicKeyPem);
+        authentication.setJsonObjectKeyValue("controller", this.controller);
+        return authentication;
     }
 }

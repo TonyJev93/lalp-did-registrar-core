@@ -35,7 +35,7 @@ public class ServiceDto {
     }
 
     public DIDService toEntity() {
-        return DIDService.builder().id(this.keyId).type(this.type).serviceEndpoint(this.serviceEndpoint).build();
+        return DIDService.builder().keyId(this.keyId).type(this.type).serviceEndpoint(this.serviceEndpoint).build();
     }
 
 }

@@ -1,8 +1,6 @@
 package net.lotte.lalpid.did.registrar.api.dto;
 
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,9 +10,7 @@ import net.lotte.lalpid.did.registrar.api.dto.request.AuthenticationDto;
 import net.lotte.lalpid.did.registrar.api.dto.request.PublicKeyDto;
 import net.lotte.lalpid.did.registrar.api.dto.request.ServiceDto;
 import net.lotte.lalpid.did.registrar.api.dto.response.DidState;
-import net.lotte.lalpid.did.registrar.api.dto.validator.annotation.DeleteInputCheck;
 import net.lotte.lalpid.did.registrar.api.dto.validator.annotation.RegisterInputCheck;
-import net.lotte.lalpid.did.registrar.api.dto.validator.annotation.UpdateInputCheck;
 import net.lotte.lalpid.did.registrar.api.dto.validator.markInterface.Update;
 import net.lotte.lalpid.did.registrar.domain.LalpDIDDocument;
 import net.lotte.lalpid.did.registrar.infrastructure.util.Uuid;
@@ -65,65 +61,47 @@ public class RegistrarDto {
     }
 
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @UpdateInputCheck
     @Getter
     public static class UpdateReq {
         @Valid
         @NotEmpty(message = VALID_CHK_MSG_TOKEN_IS_EMPTY, groups = Update.class)
         private String token;
-
-        private List<PublicKeyDto> addPublicKeys;
-
-        private List<AuthenticationDto> addAuthentications;
-
-        private List<AssertionMethodDto> addAssertionMethods;
-
-        private List<ServiceDto> addServices;
-
-        private List<PublicKeyDto> removePublicKeys;
-
-        private List<AuthenticationDto> removeAuthentications;
-
-        private List<AssertionMethodDto> removeAssertionMethods;
-
-        private List<ServiceDto> removeServices;
-
-
-        public String getDidUrlFromToken() {
-            // 토큰 디코딩
-            DecodedJWT decodedJWT = JWT.decode(this.token);
-
-            // DID URL 추출
-            String didUrl = decodedJWT.getKeyId(); // Fragment 포함된 DID URL
-
-            return didUrl;
-        }
-//
-//        public LalpDIDDocument toEntity(){
-//            return LalpDIDDocument.builder()
-//                    .
-//        }
     }
 
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @DeleteInputCheck
     @Getter
     public static class DeleteReq {
         @Valid
-        @NotEmpty(message = "did is null")
-        private String did;
+        @NotEmpty(message = VALID_CHK_MSG_TOKEN_IS_EMPTY, groups = Update.class)
+        private String token;
+
     }
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Res {
+    public static class RegisterRes {
         private String jobId;
         private DidState didState;
 
         @Builder
-        public Res(LalpDIDDocument lalpDIDDocument) {
+        public RegisterRes(LalpDIDDocument lalpDIDDocument) {
             this.jobId = Uuid.generateJobId();
             this.didState = DidState.builder().lalpDIDDocument(lalpDIDDocument).build();
         }
     }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class UpdateRes {
+        private boolean result;
+        private String msg;
+
+        @Builder
+        public UpdateRes(boolean result, String msg) {
+            this.result = result;
+            this.msg = msg;
+        }
+    }
+
+
 }

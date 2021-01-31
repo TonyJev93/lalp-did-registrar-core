@@ -2,7 +2,7 @@ package net.lotte.lalpid.did.registrar.api;
 
 import lombok.RequiredArgsConstructor;
 import net.lotte.lalpid.did.registrar.api.dto.TokenDto;
-import net.lotte.lalpid.did.registrar.domain.Token;
+import net.lotte.lalpid.did.registrar.infrastructure.util.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class TokenController {
     @PostMapping("/jwt")
     public ResponseEntity<TokenDto.Res> getJwt(@RequestBody Map<String, Object> operation) {
-        Token jwtToken = Token.toJwt(operation);
+        Jwt jwtToken = Jwt.generateToken(operation);
         return new ResponseEntity<TokenDto.Res>(TokenDto.Res.of(jwtToken), HttpStatus.OK);
     }
 }

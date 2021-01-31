@@ -46,7 +46,7 @@ public class LalpDIDDocument {
                 .context(didDocument.getContexts().get(0).toString())
                 .serviceList(DIDService.fromServiceList(didDocument.getServices()))
                 .publicKeyList(DIDPublicKey.fromDIDDocument(didDocument))
-//                .authenticationList(DIDAuthentication.fromAuthenticationList(didDocument.getAuthentications()))
+                .authenticationList(DIDAuthentication.fromAuthenticationList(didDocument.getAuthentications()))
 //                .assertionMethodList(DIDAssertionMethod.fromAssertionMethodList(didDocument.getAssertionMethods()))
                 .build();
     }
@@ -58,6 +58,16 @@ public class LalpDIDDocument {
         // Context 맵핑
         this.context = DIDDocument.builder().build().getContexts().get(0).toString();
 
+        this.mappingDID(this.did);
+
+        // 생성일시
+        this.created = getCurrentDateTimeForW3CFormat();
+
+        // 수정일시
+        this.updated = getCurrentDateTimeForW3CFormat();
+    }
+
+    public void mappingDID(URI did) {
         // PublicKey - DID 맵핑
         this.publicKeyList.forEach(didPublicKey -> didPublicKey.mappingDid(did));
 
@@ -67,11 +77,9 @@ public class LalpDIDDocument {
         // AssertionMethod - DID 맵핑
         this.assertionMethodList.forEach(didAssertionMethod -> didAssertionMethod.mappingDid(did));
 
-        // 생성일시
-        this.created = getCurrentDateTimeForW3CFormat();
+        // Service - DID 맵핑
+        this.serviceList.forEach(service -> service.mappingDid(did));
 
-        // 수정일시
-        this.updated = getCurrentDateTimeForW3CFormat();
     }
 
     public DIDDocument toDIDDocument() {
